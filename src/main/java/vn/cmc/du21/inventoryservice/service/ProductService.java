@@ -18,14 +18,7 @@ public class ProductService {
     ProductRepository productRepository;
 
     public List<Product> getAllProducts(int page, int size, String sort) {
-        List<Product> foundProducts = productRepository.findAll(PageRequest.of(page, size, Sort.by(sort))).stream().collect(Collectors.toList());
-
-        for (Product item: foundProducts) {
-            item.setProductSearch(VNCharacterUtil.removeAccent(item.getProductName()));
-            productRepository.save(item);
-        }
-
-        return foundProducts;
+        return productRepository.findAll(PageRequest.of(page, size, Sort.by(sort))).stream().collect(Collectors.toList());
     }
 
     public int totalPage (int page, int size, String sort){

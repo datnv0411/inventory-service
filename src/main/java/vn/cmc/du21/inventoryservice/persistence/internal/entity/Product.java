@@ -1,5 +1,7 @@
 package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
+import vn.cmc.du21.inventoryservice.common.VNCharacterUtil;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -65,7 +67,7 @@ public class Product implements Serializable {
     }
 
     public String getProductSearch() {
-        return productSearch;
+        return VNCharacterUtil.removeAccent(this.productName);
     }
 
     public void setProductSearch(String productSearch) {
