@@ -11,7 +11,7 @@ public class Category {
     private long categoryId;
     private String categoryName;
 
-    @OneToMany(mappedBy = "categoryId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productId", cascade = CascadeType.ALL)
     private Set<Product> products;
 
     public Category() {
