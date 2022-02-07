@@ -1,35 +1,30 @@
-package vn.cmc.du21.inventoryservice.persistence.internal.entity;
+package vn.cmc.du21.inventoryservice.presentation.external.response;
 
-import javax.persistence.*;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.Size;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "MENU")
-public class Menu {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class MenuResponse {
     private long menuId;
     private String menuName;
-
-    @ManyToOne
-    @JoinColumn(name = "sizeId")
-    private Size size;
-
+    private long sizeId;
     private long totalMoney;
     private long userId;
+    private Set<ProductResponse> products;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "menuProduct", joinColumns = @JoinColumn(name = "menuId"), inverseJoinColumns = @JoinColumn(name = "productId"))
-    private Set<Product> products = new HashSet<>();
-
-    public Menu() {
+    public MenuResponse() {
     }
 
-    public Menu(long menuId, String menuName, Size size, long totalMoney, long userId, Set<Product> products) {
+    public MenuResponse(long menuId, String menuName, long sizeId, long totalMoney, long userId, Set<ProductResponse> products) {
         this.menuId = menuId;
         this.menuName = menuName;
-        this.size = size;
+        this.sizeId = sizeId;
         this.totalMoney = totalMoney;
         this.userId = userId;
         this.products = products;
@@ -51,12 +46,12 @@ public class Menu {
         this.menuName = menuName;
     }
 
-    public Size getSize() {
-        return size;
+    public long getSizeId() {
+        return sizeId;
     }
 
-    public void setSize(Size size) {
-        this.size = size;
+    public void setSizeId(long sizeId) {
+        this.sizeId = sizeId;
     }
 
     public long getTotalMoney() {
@@ -75,11 +70,11 @@ public class Menu {
         this.userId = userId;
     }
 
-    public Set<Product> getProducts() {
+    public Set<ProductResponse> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(Set<ProductResponse> products) {
         this.products = products;
     }
 }

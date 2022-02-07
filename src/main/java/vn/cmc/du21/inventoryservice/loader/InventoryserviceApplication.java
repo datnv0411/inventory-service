@@ -15,6 +15,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 public class InventoryserviceApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(InventoryserviceApplication.class, args);
 	}
 
