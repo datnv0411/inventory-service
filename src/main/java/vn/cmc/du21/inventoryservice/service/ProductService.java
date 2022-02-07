@@ -2,6 +2,7 @@ package vn.cmc.du21.inventoryservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class ProductService {
         return productRepository.findAll(PageRequest.of(page, size, Sort.by(sort)));
     }
 
-    public List<Product> getProductByName(String name, String sort ) throws Throwable{
+    public List<Product> getProductByName(String name, int page, int size, String sort ) throws Throwable{
 
         Set<Product> productList = new LinkedHashSet<>();
         String nameSearch = StandardizeStringUtil.standardizeString(name);
@@ -58,7 +59,6 @@ public class ProductService {
                 }
             });
 
-            return products;
         } else if(sort.equals("maxSale"))
         {
             Collections.sort(products, new Comparator<Product>() {
@@ -82,14 +82,16 @@ public class ProductService {
                 }
             });
 
-            return products;
         } else {
-            for (String item : listWords
-            ) {
-                productList.addAll(productRepository.findByProductName(item));
-            }
+            Collections.sort(products, new Comparator<Product>() {
+                @Override
+                public int compare(Product lhs, Product rhs) {
+                    return lhs.getCreateTime().after(rhs.getCreateTime()) ? -1 : 1;
+                }
+            });
         }
 
         return products;
     }
 }
+

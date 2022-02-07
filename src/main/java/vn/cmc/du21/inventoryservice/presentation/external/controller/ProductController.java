@@ -65,7 +65,7 @@ public class ProductController {
         int pageInt = Integer.parseInt(page)-1;
         int sizeInt = Integer.parseInt(size);
 
-        List<ProductResponse> productResponse =  productService.getProductByName(name, sort)
+        List<ProductResponse> productResponse =  productService.getProductByName(name, pageInt, sizeInt, sort)
                 .stream()
                 .map(ProductMapper::convertProductToProductResponse)
                 .collect(Collectors.toList());
