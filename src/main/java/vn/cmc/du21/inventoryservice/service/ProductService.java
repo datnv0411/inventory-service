@@ -9,6 +9,7 @@ import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.ProductSize;
 import vn.cmc.du21.inventoryservice.persistence.internal.repository.ProductRepository;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
@@ -16,10 +17,12 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Transactional
     public Page<Product> getAllProducts(int page, int size, String sort) {
         return productRepository.findAll(PageRequest.of(page, size, Sort.by(sort)));
     }
 
+    @Transactional
     public Page<Product> getProductByName(String name, int page, int size, String sort) throws Throwable{
         Set<Product> productList = new LinkedHashSet<>();
         String nameSearch = StandardizeStringUtil.standardizeString(name);
@@ -34,7 +37,7 @@ public class ProductService {
 
         List<Product> products = new ArrayList<>(productList);
 
-        if(sort.equals("priceSale")){
+        if(sort.equals("low-to-high-price")){
 
             Collections.sort(products, new Comparator<Product>() {
                 @Override
@@ -54,7 +57,7 @@ public class ProductService {
                     return Long.compare(minLhsPrice, minRhsPrice);
                 }
             });
-        } else if(sort.equals("maxSale"))
+        } else if(sort.equals("most-discounted"))
         {
             Collections.sort(products, new Comparator<Product>() {
                 @Override
@@ -89,6 +92,12 @@ public class ProductService {
         final int start = (int)pageable.getOffset();
         final int end = Math.min((start + pageable.getPageSize()), products.size());
         return new PageImpl<>(products.subList(start, end), pageable, products.size());
+    }
+
+    @Transactional
+    public Page<Product> getProductByCategory(long category, int page, int size, String sort){
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        return productRepository.findAllByCategory_CategoryId(category,pageable);
     }
 }
 

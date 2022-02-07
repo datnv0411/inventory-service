@@ -56,6 +56,7 @@ public class MenuService {
         menuRepository.delete(foundMenu);
     }
 
+    @Transactional
     public Page<Menu> getPageMenu(long userId, String page, String size, String sortFiled) {
 
         int pageInt = Integer.parseInt(page) - 1;
