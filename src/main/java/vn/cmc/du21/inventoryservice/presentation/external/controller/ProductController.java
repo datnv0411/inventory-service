@@ -26,9 +26,9 @@ public class ProductController {
             , @RequestParam(value = "size", required = false) String size
             , @RequestParam(value = "sort",required = false) String sort)
     {
-        if (page==null || !page.chars().allMatch(Character::isDigit) || page == "") page="1";
-        if (size==null || !size.chars().allMatch(Character::isDigit) || size == "") size="10";
-        if (sort==null || sort == "") sort="productId";
+        if (page==null || !page.chars().allMatch(Character::isDigit) || page.equals("")) page="1";
+        if (size==null || !size.chars().allMatch(Character::isDigit) || size.equals("")) size="10";
+        if (sort==null || sort.equals("")) sort="productId";
 
         int pageInt = Integer.parseInt(page)-1;
         int sizeInt = Integer.parseInt(size);
@@ -57,9 +57,9 @@ public class ProductController {
             , @RequestParam(value = "sort",required = false) String sort
     ) throws Throwable{
         
-        if (page==null || !page.chars().allMatch(Character::isDigit) || page == "") page="1";
-        if (size==null || !size.chars().allMatch(Character::isDigit) || size == "") size="10";
-        if (sort==null || sort == "") sort="create-time";
+        if (page==null || !page.chars().allMatch(Character::isDigit) || page.equals("")) page="1";
+        if (size==null || !size.chars().allMatch(Character::isDigit) || size.equals("")) size="10";
+        if (sort==null || sort.equals("")) sort="create-time";
 
         int pageInt = Integer.parseInt(page)-1;
         int sizeInt = Integer.parseInt(size);
