@@ -5,6 +5,7 @@ import vn.cmc.du21.inventoryservice.common.VNCharacterUtil;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -14,13 +15,13 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long productId;
     private String productName;
-    @Transient
     private String productSearch;
-
     private String quantitative;
     private String description;
     private Timestamp createTime;
     private String productImage;
+    @Transient
+    private long priceDefault;
 
     @ManyToOne
     @JoinColumn(name = "categoryId")
@@ -50,6 +51,14 @@ public class Product implements Serializable {
         this.menus = menus;
     }
 
+    public long getPriceDefault() {
+        return priceDefault;
+    }
+
+    public void setPriceDefault(long priceDefault) {
+        this.priceDefault = priceDefault;
+    }
+
     public long getProductId() {
         return productId;
     }
@@ -67,7 +76,7 @@ public class Product implements Serializable {
     }
 
     public String getProductSearch() {
-        return VNCharacterUtil.removeAccent(this.productName);
+        return productSearch;
     }
 
     public void setProductSearch(String productSearch) {
@@ -128,5 +137,18 @@ public class Product implements Serializable {
 
     public void setMenus(Set<Menu> menus) {
         this.menus = menus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return productId == product.productId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId);
     }
 }
