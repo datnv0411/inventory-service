@@ -1,7 +1,5 @@
 package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
-import vn.cmc.du21.inventoryservice.common.VNCharacterUtil;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -16,7 +14,6 @@ public class Product implements Serializable {
     private long productId;
     private String productName;
     private String productSearch;
-
     private String quantitative;
     private String description;
     private Timestamp createTime;
@@ -35,7 +32,9 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(long productId, String productName, String productSearch, String quantitative, String description, Timestamp createTime, String productImage, Category category, Set<ProductSize> productSizes, Set<Menu> menus) {
+    public Product(long productId, String productName, String productSearch, String quantitative
+            , String description, Timestamp createTime, String productImage, Category category
+            , Set<ProductSize> productSizes, Set<Menu> menus) {
         this.productId = productId;
         this.productName = productName;
         this.productSearch = productSearch;
@@ -46,19 +45,6 @@ public class Product implements Serializable {
         this.category = category;
         this.productSizes = productSizes;
         this.menus = menus;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return productId == product.productId;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(productId);
     }
 
     public long getProductId() {
@@ -78,7 +64,7 @@ public class Product implements Serializable {
     }
 
     public String getProductSearch() {
-        return VNCharacterUtil.removeAccent(this.productName);
+        return productSearch;
     }
 
     public void setProductSearch(String productSearch) {
@@ -139,5 +125,18 @@ public class Product implements Serializable {
 
     public void setMenus(Set<Menu> menus) {
         this.menus = menus;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return productId == product.productId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId);
     }
 }

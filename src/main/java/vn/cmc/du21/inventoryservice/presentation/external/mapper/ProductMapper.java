@@ -10,9 +10,8 @@ public class ProductMapper {
         super();
     }
 
-    public static ProductResponse convertProductToProductResponse(Product product)
-    {
-        String createTime =  product.getCreateTime() == null ? null : DateTimeUtil.timestampToString( product.getCreateTime());
+    public static ProductResponse convertProductToProductResponse(Product product) {
+        String createTime = product.getCreateTime() == null ? null : DateTimeUtil.timestampToString(product.getCreateTime());
         return new ProductResponse(product.getProductId(), product.getProductName(), product.getProductSearch(),
                 product.getQuantitative(), product.getDescription(), createTime, product.getProductImage(),
                 product.getCategory().getCategoryId());
