@@ -1,13 +1,5 @@
 package vn.cmc.du21.inventoryservice.presentation.external.response;
 
-import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
-import vn.cmc.du21.inventoryservice.persistence.internal.entity.Size;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.util.HashSet;
 import java.util.Set;
 
 public class MenuResponse {

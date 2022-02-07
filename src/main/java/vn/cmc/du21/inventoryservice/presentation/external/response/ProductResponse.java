@@ -1,7 +1,5 @@
 package vn.cmc.du21.inventoryservice.presentation.external.response;
 
-import java.sql.Timestamp;
-
 public class ProductResponse {
     private long productId;
     private String productName;
