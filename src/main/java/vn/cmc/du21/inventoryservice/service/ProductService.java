@@ -1,9 +1,7 @@
 package vn.cmc.du21.inventoryservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import vn.cmc.du21.inventoryservice.common.StandardizeStringUtil;
 import vn.cmc.du21.inventoryservice.common.VNCharacterUtil;
@@ -22,7 +20,7 @@ public class ProductService {
         return productRepository.findAll(PageRequest.of(page, size, Sort.by(sort)));
     }
 
-    public List<Product> getProductByName(String name, String sort ) throws Throwable{
+    public Page<Product> getProductByName(String name, int page, int size, String sort) throws Throwable{
 
         Set<Product> productList = new LinkedHashSet<>();
         String nameSearch = StandardizeStringUtil.standardizeString(name);
@@ -57,8 +55,6 @@ public class ProductService {
                     return Long.compare(minLhsPrice, minRhsPrice);
                 }
             });
-
-            return products;
         } else if(sort.equals("maxSale"))
         {
             Collections.sort(products, new Comparator<Product>() {
@@ -81,15 +77,18 @@ public class ProductService {
                     return maxPercentLhs >  maxPercentRhs ? -1 : 1;
                 }
             });
-
-            return products;
         } else {
-            for (String item : listWords
-            ) {
-                productList.addAll(productRepository.findByProductName(item));
-            }
+            Collections.sort(products, new Comparator<Product>() {
+                @Override
+                public int compare(Product lhs, Product rhs) {
+                    return lhs.getCreateTime().after(rhs.getCreateTime()) ? -1 : 1;
+                }
+            });
         }
 
-        return products;
+        Pageable pageable = PageRequest.of(page, size);
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), products.size());
+        return new PageImpl<>(products.subList(start, end), pageable, products.size());
     }
 }

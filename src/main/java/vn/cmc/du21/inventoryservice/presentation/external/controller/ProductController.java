@@ -65,16 +65,17 @@ public class ProductController {
         int pageInt = Integer.parseInt(page)-1;
         int sizeInt = Integer.parseInt(size);
 
-        List<ProductResponse> productResponse =  productService.getProductByName(name, sort)
-                .stream()
-                .map(ProductMapper::convertProductToProductResponse)
-                .collect(Collectors.toList());
+        Page<ProductResponse> listProduct = productService.getProductByName(name, pageInt, sizeInt, sort)
+                .map(ProductMapper::convertProductToProductResponse);
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new StandardResponse<>(
-                        StatusResponse.SUCCESSFUL,
-                        "found !!!",
-                        productResponse
+                new PageResponse<Object>(
+                        StatusResponse.SUCCESSFUL
+                        , "Successfully"
+                        , listProduct.getContent()
+                        , pageInt +1
+                        , listProduct.getTotalPages()
+                        , listProduct.getTotalElements()
                 )
         );
     }
