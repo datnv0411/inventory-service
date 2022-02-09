@@ -12,9 +12,9 @@ public class Menu {
     private long menuId;
     private String menuName;
 
-    @ManyToOne
-    @JoinColumn(name = "sizeId")
-    private Size size;
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinTable(name = "menuSize", joinColumns = @JoinColumn(name = "menuId"), inverseJoinColumns = @JoinColumn(name = "sizeId"))
+    private Set<Size> sizes = new HashSet<>();
 
     private long totalMoney;
     private long userId;
@@ -26,10 +26,10 @@ public class Menu {
     public Menu() {
     }
 
-    public Menu(long menuId, String menuName, Size size, long totalMoney, long userId, Set<Product> products) {
+    public Menu(long menuId, String menuName, Set<Size> sizes, long totalMoney, long userId, Set<Product> products) {
         this.menuId = menuId;
         this.menuName = menuName;
-        this.size = size;
+        this.sizes = sizes;
         this.totalMoney = totalMoney;
         this.userId = userId;
         this.products = products;
@@ -51,12 +51,12 @@ public class Menu {
         this.menuName = menuName;
     }
 
-    public Size getSize() {
-        return size;
+    public Set<Size> getSizes() {
+        return sizes;
     }
 
-    public void setSize(Size size) {
-        this.size = size;
+    public void setSizes(Set<Size> sizes) {
+        this.sizes = sizes;
     }
 
     public long getTotalMoney() {

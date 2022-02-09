@@ -3,7 +3,6 @@ package vn.cmc.du21.inventoryservice.presentation.external.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 import vn.cmc.du21.inventoryservice.common.JwtTokenProvider;
 import vn.cmc.du21.inventoryservice.common.restful.PageResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StandardResponse;
@@ -28,6 +27,7 @@ public class MenuController {
                                               @PathVariable(name = "productId") long productId)
     {
         MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.addProduct(productId));
+
         return new StandardResponse<>(
                 StatusResponse.SUCCESSFUL,
                 "Add successfully",

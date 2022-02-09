@@ -5,11 +5,15 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.Menu;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.ProductSize;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.Size;
 import vn.cmc.du21.inventoryservice.persistence.internal.repository.MenuRepository;
 import vn.cmc.du21.inventoryservice.persistence.internal.repository.ProductRepository;
 
 import javax.transaction.Transactional;
+import java.util.HashSet;
 import java.util.List;
+import java.util.PrimitiveIterator;
 import java.util.Set;
 
 @Service
@@ -24,10 +28,50 @@ public class MenuService {
     public Menu addProduct(long productId) {
         Product foundProduct = productRepository.findById(productId).orElse(null);
         Set<Product> listProduct = mainMenu.getProducts();
-        listProduct.add(foundProduct);
-        mainMenu.setProducts(listProduct);
+        if(listProduct.contains(foundProduct))
+        {
+            return mainMenu;
+        }
+        else
+        {
+            listProduct.add(foundProduct);
+            mainMenu.setProducts(listProduct);
 
-        return mainMenu;
+            Set<Size> listSizeMenu = mainMenu.getSizes();
+            Set<Size> listSizeProduct = new HashSet<>();
+
+            for(ProductSize item : foundProduct.getProductSizes())
+            {
+                listSizeProduct.add(item.getSize());
+            }
+
+            if(listSizeMenu.isEmpty())
+            {
+                listSizeMenu.addAll(listSizeProduct);
+            }
+            else
+            {
+                for(Size item : listSizeProduct)
+                {
+                    if(!listSizeMenu.contains(item))
+                    {
+                        listSizeProduct.remove(item);
+                    }
+                }
+
+                for(Size item : listSizeMenu)
+                {
+                    if(!listSizeProduct.contains(item))
+                    {
+                        listSizeMenu.remove(item);
+                    }
+                }
+            }
+
+            mainMenu.setSizes(listSizeMenu);
+
+            return mainMenu;
+        }
     }
 
     @Transactional
@@ -36,6 +80,7 @@ public class MenuService {
         Set<Product> listProduct = mainMenu.getProducts();
         listProduct.remove(foundProduct);
         mainMenu.setProducts(listProduct);
+
         return mainMenu;
     }
 

@@ -2,6 +2,7 @@ package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -12,7 +13,7 @@ public class Size implements Serializable {
     private long sizeId;
     private String sizeName;
 
-    @OneToMany(mappedBy = "size", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "sizes", fetch = FetchType.EAGER)
     private Set<Menu> menus;
 
     @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -26,6 +27,19 @@ public class Size implements Serializable {
         this.sizeName = sizeName;
         this.menus = menus;
         this.productSizes = productSizes;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Size size = (Size) o;
+        return sizeId == size.sizeId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sizeId);
     }
 
     public long getSizeId() {
