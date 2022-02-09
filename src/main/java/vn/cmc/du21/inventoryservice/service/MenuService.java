@@ -10,6 +10,7 @@ import vn.cmc.du21.inventoryservice.persistence.internal.repository.ProductRepos
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -67,5 +68,13 @@ public class MenuService {
         final int end = Math.min((start + pageable.getPageSize()), listMenu.size());
 
         return new PageImpl<>(listMenu.subList(start, end), pageable, listMenu.size());
+    }
+    @Transactional
+    public Menu getMenuById(long userId,long id) throws Throwable{
+
+        Menu foundMenu = menuRepository.findById(id).orElseThrow(()->{
+            throw new RuntimeException("the menu was not found!!!");
+        });
+        return foundMenu;
     }
 }

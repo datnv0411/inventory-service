@@ -8,6 +8,7 @@ import vn.cmc.du21.inventoryservice.common.JwtTokenProvider;
 import vn.cmc.du21.inventoryservice.common.restful.PageResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StandardResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StatusResponse;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.Menu;
 import vn.cmc.du21.inventoryservice.presentation.external.mapper.MenuMapper;
 import vn.cmc.du21.inventoryservice.presentation.external.request.MenuRequest;
 import vn.cmc.du21.inventoryservice.presentation.external.response.MenuResponse;
@@ -101,6 +102,17 @@ public class MenuController {
         return new StandardResponse<>(
                 StatusResponse.SUCCESSFUL,
                 "Deleted"
+        );
+    }
+    @GetMapping("/get-detail-menu/{menuId}")
+    StandardResponse<Object> getDetailMenu(HttpServletRequest request,HttpServletResponse response,
+                                           @PathVariable(name ="menuId") long menuId) throws Throwable {
+        UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request);
+        long userId = userLogin.getUserId();
+        MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.getMenuById(userId,menuId));
+        return new StandardResponse<>(
+                StatusResponse.SUCCESSFUL,
+                "found!!",menuResponse
         );
     }
 }

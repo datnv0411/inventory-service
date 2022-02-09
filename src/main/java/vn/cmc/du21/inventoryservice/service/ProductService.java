@@ -79,4 +79,12 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return productRepository.findAllByCategory_CategoryId(category,pageable);
     }
+
+    @Transactional
+    public Product getProductById(Long id) throws Throwable{
+        return productRepository.findById(id).orElseThrow(() -> {
+                    throw new RuntimeException("the product was not found !!!");
+                }
+        );
+    }
 }

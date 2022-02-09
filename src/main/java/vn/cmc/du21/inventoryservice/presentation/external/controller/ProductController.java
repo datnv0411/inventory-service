@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.cmc.du21.inventoryservice.common.restful.PageResponse;
+import vn.cmc.du21.inventoryservice.common.restful.StandardResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StatusResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.mapper.ProductMapper;
 import vn.cmc.du21.inventoryservice.presentation.external.response.ProductResponse;
@@ -13,6 +14,7 @@ import vn.cmc.du21.inventoryservice.service.ProductService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/v1.0")
@@ -56,7 +58,7 @@ public class ProductController {
             , @RequestParam(value = "size",required = false) String size
             , @RequestParam(value = "sort",required = false) String sort
     ) throws Throwable{
-        
+
         if (page==null || !page.chars().allMatch(Character::isDigit) || page.equals("")) page="1";
         if (size==null || !size.chars().allMatch(Character::isDigit) || size.equals("")) size="10";
         if (sort==null || sort.equals("")) sort="create-time";
@@ -104,6 +106,14 @@ public class ProductController {
                         , listProduct.getTotalPages()
                         , listProduct.getTotalElements()
                 )
+        );
+    }
+
+    @GetMapping("/product/get-detail-product/{id}")
+    ResponseEntity<Object> getDetailProduct(@PathVariable Long id) throws Throwable {
+        ProductResponse productResponse = ProductMapper.convertProductToProductResponse(productService.getProductById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new StandardResponse<>(StatusResponse.SUCCESSFUL,"FOUND",productResponse)
         );
     }
 }
