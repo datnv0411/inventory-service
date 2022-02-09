@@ -3,6 +3,10 @@ package vn.cmc.du21.inventoryservice.common;
 import java.util.Arrays;
 
 public class VNCharacterUtil {
+    private VNCharacterUtil(){
+        super();
+    }
+
     private static final char[] SOURCE_CHARACTERS = {'À', 'Á', 'Â', 'Ã', 'È', 'É',
             'Ê', 'Ì', 'Í', 'Ò', 'Ó', 'Ô', 'Õ', 'Ù', 'Ú', 'Ý', 'à', 'á', 'â',
             'ã', 'è', 'é', 'ê', 'ì', 'í', 'ò', 'ó', 'ô', 'õ', 'ù', 'ú', 'ý',

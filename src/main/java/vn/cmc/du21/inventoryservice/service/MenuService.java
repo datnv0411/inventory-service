@@ -1,9 +1,7 @@
 package vn.cmc.du21.inventoryservice.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.Menu;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
@@ -20,7 +18,7 @@ public class MenuService {
     MenuRepository menuRepository;
     @Autowired
     ProductRepository productRepository;
-    private static Menu mainMenu = new Menu();
+    private Menu mainMenu = new Menu();
 
     @Transactional
     public Menu addProduct(long productId) {
@@ -52,7 +50,7 @@ public class MenuService {
 
     @Transactional
     public void deleteMenu(long userId, long menuId) {
-        Menu foundMenu = menuRepository.findById(menuId).orElse(null);
+        Menu foundMenu = menuRepository.findById(menuId).orElseThrow(null);
         menuRepository.delete(foundMenu);
     }
 
@@ -62,7 +60,12 @@ public class MenuService {
         int pageInt = Integer.parseInt(page) - 1;
         int sizeInt = Integer.parseInt(size);
 
-        Page<Menu> listPage = menuRepository.findAll(PageRequest.of(pageInt, sizeInt, Sort.by(sortFiled).descending()));
-        return listPage;
+        List<Menu> listMenu = menuRepository.findByUserId(userId);
+
+        Pageable pageable = PageRequest.of(pageInt, sizeInt, Sort.by(sortFiled));
+        final int start = (int)pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), listMenu.size());
+
+        return new PageImpl<>(listMenu.subList(start, end), pageable, listMenu.size());
     }
 }

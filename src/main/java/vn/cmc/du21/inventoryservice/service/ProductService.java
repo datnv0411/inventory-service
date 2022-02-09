@@ -23,7 +23,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Page<Product> getProductByName(String name, int page, int size, String sort) throws Throwable{
+    public Page<Product> getProductByName(String name, int page, int size, String sort) {
         Set<Product> productList = new LinkedHashSet<>();
         String nameSearch = StandardizeStringUtil.standardizeString(name);
         nameSearch = VNCharacterUtil.removeAccent(nameSearch);
@@ -39,53 +39,32 @@ public class ProductService {
 
         if(sort.equals("low-to-high-price")){
 
-            Collections.sort(products, new Comparator<Product>() {
-                @Override
-                public int compare(Product lhs, Product rhs) {
+            Collections.sort(products, (lhs, rhs) -> {
 
-                    Comparator comparatorForPriceSale = new Comparator<ProductSize>()
-                    {
-                        @Override
-                        public int compare(ProductSize l, ProductSize r) {
-                            return Long.compare(l.getPriceSale(), r.getPriceSale());
-                        }
-                    };
+                Comparator<ProductSize> comparatorForPriceSale =
+                        (l, r) -> Long.compare(l.getPriceSale(), r.getPriceSale());
 
-                    long minLhsPrice = Collections.min(lhs.getProductSizes(), comparatorForPriceSale).getPriceSale();
-                    long minRhsPrice = Collections.min(rhs.getProductSizes(), comparatorForPriceSale).getPriceSale();
+                long minLhsPrice = Collections.min(lhs.getProductSizes(), comparatorForPriceSale).getPriceSale();
+                long minRhsPrice = Collections.min(rhs.getProductSizes(), comparatorForPriceSale).getPriceSale();
 
-                    return Long.compare(minLhsPrice, minRhsPrice);
-                }
+                return Long.compare(minLhsPrice, minRhsPrice);
             });
         } else if(sort.equals("most-discounted"))
         {
-            Collections.sort(products, new Comparator<Product>() {
-                @Override
-                public int compare(Product lhs, Product rhs) {
+            Collections.sort(products, (lhs, rhs) -> {
 
-                    Comparator comparatorForPriceSale = new Comparator<ProductSize>()
-                    {
-                        @Override
-                        public int compare(ProductSize l, ProductSize r) {
-                            return Double.compare((l.getPrice() - l.getPriceSale())*1.0/l.getPrice(),
-                                    (r.getPrice() - r.getPriceSale())*1.0/r.getPrice());
-                        }
-                    };
+                Comparator<ProductSize> comparatorForPriceSale =
+                        (l, r) -> Double.compare((l.getPrice() - l.getPriceSale())*1.0/l.getPrice(),
+                                (r.getPrice() - r.getPriceSale())*1.0/r.getPrice());
 
-                    ProductSize maxLhs = Collections.max(lhs.getProductSizes(), comparatorForPriceSale);
-                    Double maxPercentLhs = (maxLhs.getPrice() - maxLhs.getPriceSale())*1.0/maxLhs.getPrice();
-                    ProductSize maxRhs = Collections.max(rhs.getProductSizes(), comparatorForPriceSale);
-                    Double maxPercentRhs = (maxRhs.getPrice() - maxRhs.getPriceSale())*1.0/maxRhs.getPrice();
-                    return maxPercentLhs >  maxPercentRhs ? -1 : 1;
-                }
+                ProductSize maxLhs = Collections.max(lhs.getProductSizes(), comparatorForPriceSale);
+                Double maxPercentLhs = (maxLhs.getPrice() - maxLhs.getPriceSale())*1.0/maxLhs.getPrice();
+                ProductSize maxRhs = Collections.max(rhs.getProductSizes(), comparatorForPriceSale);
+                Double maxPercentRhs = (maxRhs.getPrice() - maxRhs.getPriceSale())*1.0/maxRhs.getPrice();
+                return maxPercentLhs >  maxPercentRhs ? -1 : 1;
             });
         } else {
-            Collections.sort(products, new Comparator<Product>() {
-                @Override
-                public int compare(Product lhs, Product rhs) {
-                    return lhs.getCreateTime().after(rhs.getCreateTime()) ? -1 : 1;
-                }
-            });
+            Collections.sort(products, (lhs, rhs) -> lhs.getCreateTime().after(rhs.getCreateTime()) ? -1 : 1);
         }
 
         Pageable pageable = PageRequest.of(page, size);

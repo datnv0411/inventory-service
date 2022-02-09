@@ -29,7 +29,7 @@ public class ApiExceptionHandler {
      */
     @ExceptionHandler(IndexOutOfBoundsException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public StandardResponse TodoException(Exception ex, WebRequest request) {
+    public StandardResponse toDoException(Exception ex, WebRequest request) {
         return new StandardResponse<>(
                 StatusResponse.BAD_REQUEST,
                 ex.getMessage()

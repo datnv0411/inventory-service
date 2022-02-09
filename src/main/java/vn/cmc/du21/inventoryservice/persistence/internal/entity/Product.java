@@ -9,6 +9,8 @@ import java.util.Set;
 @Entity
 @Table(name = "PRODUCT")
 public class Product implements Serializable {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long productId;
@@ -140,3 +142,4 @@ public class Product implements Serializable {
         return Objects.hash(productId);
     }
 }
+

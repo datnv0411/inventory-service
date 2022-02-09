@@ -1,6 +1,6 @@
 package vn.cmc.du21.inventoryservice.presentation.external.response;
 
-import java.sql.Timestamp;
+import java.util.List;
 
 public class ProductResponse {
     private long productId;
@@ -11,11 +11,13 @@ public class ProductResponse {
     private String createTime;
     private String productImage;
     private long categoryId;
+    private List<SizeResponse> sizeResponseList;
 
     public ProductResponse() {
     }
 
-    public ProductResponse(long productId, String productName, String productSearch, String quantitative, String description, String createTime, String productImage, long categoryId) {
+    public ProductResponse(long productId, String productName, String productSearch, String quantitative
+            , String description, String createTime, String productImage, long categoryId) {
         this.productId = productId;
         this.productName = productName;
         this.productSearch = productSearch;
@@ -24,6 +26,28 @@ public class ProductResponse {
         this.createTime = createTime;
         this.productImage = productImage;
         this.categoryId = categoryId;
+    }
+
+    public ProductResponse(long productId, String productName, String productSearch, String quantitative
+            , String description, String createTime, String productImage, long categoryId
+            , List<SizeResponse> sizeResponseList) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productSearch = productSearch;
+        this.quantitative = quantitative;
+        this.description = description;
+        this.createTime = createTime;
+        this.productImage = productImage;
+        this.categoryId = categoryId;
+        this.sizeResponseList = sizeResponseList;
+    }
+
+    public List<SizeResponse> getSizeResponseList() {
+        return sizeResponseList;
+    }
+
+    public void setSizeResponseList(List<SizeResponse> sizeResponseList) {
+        this.sizeResponseList = sizeResponseList;
     }
 
     public long getProductId() {

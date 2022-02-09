@@ -1,10 +1,11 @@
 package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
-public class ProductSize {
+public class ProductSize implements Serializable {
     @EmbeddedId
     private ProductSizeId productSizeId;
 
