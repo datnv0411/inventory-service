@@ -42,14 +42,6 @@ public class ProductResponse {
         this.sizeResponseList = sizeResponseList;
     }
 
-    public List<SizeResponse> getSizeResponseList() {
-        return sizeResponseList;
-    }
-
-    public void setSizeResponseList(List<SizeResponse> sizeResponseList) {
-        this.sizeResponseList = sizeResponseList;
-    }
-
     public long getProductId() {
         return productId;
     }
@@ -112,5 +104,13 @@ public class ProductResponse {
 
     public void setCategoryId(long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public List<SizeResponse> getSizeResponseList() {
+        return sizeResponseList;
+    }
+
+    public void setSizeResponseList(List<SizeResponse> sizeResponseList) {
+        this.sizeResponseList = sizeResponseList;
     }
 }

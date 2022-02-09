@@ -48,3 +48,4 @@ public class SizeResponse {
         this.priceSale = priceSale;
     }
 }
+

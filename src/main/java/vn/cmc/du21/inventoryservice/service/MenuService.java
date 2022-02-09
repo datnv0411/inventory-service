@@ -50,7 +50,7 @@ public class MenuService {
 
     @Transactional
     public void deleteMenu(long userId, long menuId) {
-        Menu foundMenu = menuRepository.findById(menuId).orElseThrow(null);
+        Menu foundMenu = menuRepository.findByUserIdAndMenuId(userId, menuId).orElseThrow(null);
         menuRepository.delete(foundMenu);
     }
 
@@ -67,5 +67,11 @@ public class MenuService {
         final int end = Math.min((start + pageable.getPageSize()), listMenu.size());
 
         return new PageImpl<>(listMenu.subList(start, end), pageable, listMenu.size());
+    }
+    @Transactional
+    public Menu getMenuById(long userId,long menuId) throws Throwable{
+        return menuRepository.findByUserIdAndMenuId(userId, menuId).orElseThrow(()->{
+            throw new RuntimeException("the menu was not found!!!");
+        });
     }
 }

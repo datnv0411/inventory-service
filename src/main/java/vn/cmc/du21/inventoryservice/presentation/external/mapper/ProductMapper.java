@@ -30,7 +30,7 @@ public class ProductMapper {
         }
         return new ProductResponse(product.getProductId(), product.getProductName(), product.getProductSearch(),
                 product.getQuantitative(), product.getDescription(), createTime, product.getProductImage(),
-                product.getCategory().getCategoryId(), sizeResponseList);
+                product.getCategory().getCategoryId(),sizeResponseList);
     }
 
 }
