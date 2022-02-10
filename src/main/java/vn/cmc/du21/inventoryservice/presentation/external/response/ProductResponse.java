@@ -1,5 +1,7 @@
 package vn.cmc.du21.inventoryservice.presentation.external.response;
 
+import vn.cmc.du21.inventoryservice.common.PathImageUtil;
+
 import java.util.List;
 
 public class ProductResponse {
@@ -91,7 +93,7 @@ public class ProductResponse {
     }
 
     public String getProductImage() {
-        return "~/api/v1.0/FileUpload/files/" + productImage;
+        return PathImageUtil.getPathImage(this.productImage);
     }
 
     public void setProductImage(String productImage) {
