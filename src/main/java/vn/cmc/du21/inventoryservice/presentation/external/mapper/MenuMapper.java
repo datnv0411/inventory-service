@@ -1,12 +1,16 @@
 package vn.cmc.du21.inventoryservice.presentation.external.mapper;
 
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.Menu;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.ProductSize;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.Size;
 import vn.cmc.du21.inventoryservice.presentation.external.request.MenuRequest;
 import vn.cmc.du21.inventoryservice.presentation.external.response.MenuResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.response.ProductResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.response.SizeResponse;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -20,22 +24,37 @@ public class MenuMapper {
     public static MenuResponse convertMenuToMenuResponse(Menu menu) {
         Set<ProductResponse> products = menu.getProducts().stream()
                 .map(ProductMapper::convertProductToProductResponse)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
         String menuName = menu.getMenuName() == null ? null : menu.getMenuName();
 
         List listSizeResponse = new ArrayList<SizeResponse>();
-//        for()
-//
-//        SizeResponse sizeResponse = new SizeResponse();
-//        for(Product item : menu.getProducts())
-//        {
-//
-//            listSizeResponse.add(sizeResponse);
-//        }
+
+
+        for(Size itemSize : menu.getSizes())
+        {
+            SizeResponse sizeResponse = new SizeResponse();
+
+            sizeResponse.setSizeId(itemSize.getSizeId());
+            sizeResponse.setSizeName(itemSize.getSizeName());
+
+            for(Product itemProduct : menu.getProducts())
+            {
+                for(ProductSize itemProductSize : itemProduct.getProductSizes())
+                {
+                    if(itemProductSize.getSize().getSizeId() == itemSize.getSizeId())
+                    {
+                        sizeResponse.setPrice(sizeResponse.getPrice() + itemProductSize.getPrice());
+                        sizeResponse.setPriceSale(sizeResponse.getPriceSale() + itemProductSize.getPriceSale());
+                    }
+                }
+            }
+
+            listSizeResponse.add(sizeResponse);
+        }
 
 
 
-        return new MenuResponse(menu.getMenuId(), menuName, menu.getTotalMoney(),
+        return new MenuResponse(menu.getMenuId(), menuName,
                 menu.getUserId(), products, listSizeResponse);
     }
 

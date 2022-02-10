@@ -2,6 +2,7 @@ package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,19 +14,15 @@ public class Size implements Serializable {
     private long sizeId;
     private String sizeName;
 
-    @ManyToMany(mappedBy = "sizes", fetch = FetchType.EAGER)
-    private Set<Menu> menus;
-
     @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductSize> productSizes;
 
     public Size() {
     }
 
-    public Size(long sizeId, String sizeName, Set<Menu> menus, Set<ProductSize> productSizes) {
+    public Size(long sizeId, String sizeName, LinkedHashSet<ProductSize> productSizes) {
         this.sizeId = sizeId;
         this.sizeName = sizeName;
-        this.menus = menus;
         this.productSizes = productSizes;
     }
 
@@ -58,19 +55,11 @@ public class Size implements Serializable {
         this.sizeName = sizeName;
     }
 
-    public Set<Menu> getMenus() {
-        return menus;
-    }
-
-    public void setMenus(Set<Menu> menus) {
-        this.menus = menus;
-    }
-
     public Set<ProductSize> getProductSizes() {
         return productSizes;
     }
 
-    public void setProductSizes(Set<ProductSize> productSizes) {
+    public void setProductSizes(LinkedHashSet<ProductSize> productSizes) {
         this.productSizes = productSizes;
     }
 }

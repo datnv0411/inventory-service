@@ -1,10 +1,11 @@
 package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table
-public class ProductSize {
+public class ProductSize implements Serializable {
     @EmbeddedId
     private ProductSizeId productSizeId;
 
@@ -16,18 +17,16 @@ public class ProductSize {
     @MapsId("sizeId")
     private Size size;
 
-    private int totalQuantity;
     private long price;
     private long priceSale;
 
     public ProductSize() {
     }
 
-    public ProductSize(ProductSizeId productSizeId, Product product, Size size, int totalQuantity, long price, long priceSale) {
+    public ProductSize(ProductSizeId productSizeId, Product product, Size size, long price, long priceSale) {
         this.productSizeId = productSizeId;
         this.product = product;
         this.size = size;
-        this.totalQuantity = totalQuantity;
         this.price = price;
         this.priceSale = priceSale;
     }
@@ -54,14 +53,6 @@ public class ProductSize {
 
     public void setSize(Size size) {
         this.size = size;
-    }
-
-    public int getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public void setTotalQuantity(int totalQuantity) {
-        this.totalQuantity = totalQuantity;
     }
 
     public long getPrice() {

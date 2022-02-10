@@ -11,10 +11,7 @@ import vn.cmc.du21.inventoryservice.persistence.internal.repository.MenuReposito
 import vn.cmc.du21.inventoryservice.persistence.internal.repository.ProductRepository;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
-import java.util.List;
-import java.util.PrimitiveIterator;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MenuService {
@@ -28,59 +25,45 @@ public class MenuService {
     public Menu addProduct(long productId) {
         Product foundProduct = productRepository.findById(productId).orElse(null);
         Set<Product> listProduct = mainMenu.getProducts();
-        if(listProduct.contains(foundProduct))
-        {
-            return mainMenu;
-        }
-        else
-        {
+
+        if (!listProduct.contains(foundProduct)) {
             listProduct.add(foundProduct);
             mainMenu.setProducts(listProduct);
 
-            Set<Size> listSizeMenu = mainMenu.getSizes();
-            Set<Size> listSizeProduct = new HashSet<>();
+            LinkedHashSet<Size> listSizeMenu = mainMenu.getSizes();
+            LinkedHashSet<Size> listSizeProduct = new LinkedHashSet<>();
 
-            for(ProductSize item : foundProduct.getProductSizes())
-            {
+            for (ProductSize item : foundProduct.getProductSizes()) {
                 listSizeProduct.add(item.getSize());
             }
 
-            if(listSizeMenu.isEmpty())
-            {
+            if (listSizeMenu.isEmpty()) {
                 listSizeMenu.addAll(listSizeProduct);
-            }
-            else
-            {
-                for(Size item : listSizeProduct)
-                {
-                    if(!listSizeMenu.contains(item))
-                    {
-                        listSizeProduct.remove(item);
-                    }
-                }
-
-                for(Size item : listSizeMenu)
-                {
-                    if(!listSizeProduct.contains(item))
-                    {
+            } else {
+                for (Size item : listSizeMenu) {
+                    if (!listSizeProduct.contains(item)) {
                         listSizeMenu.remove(item);
                     }
                 }
             }
-
             mainMenu.setSizes(listSizeMenu);
-
-            return mainMenu;
         }
+        return mainMenu;
     }
 
     @Transactional
     public Menu removeProduct(long productId) {
         Product foundProduct = productRepository.findById(productId).orElse(null);
         Set<Product> listProduct = mainMenu.getProducts();
-        listProduct.remove(foundProduct);
-        mainMenu.setProducts(listProduct);
 
+        if(listProduct.contains(foundProduct))
+        {
+            listProduct.remove(foundProduct);
+            mainMenu.setProducts(listProduct);
+
+            LinkedHashSet<Size> listSizeMenu = mainMenu.getSizes();
+            mainMenu.setSizes(listSizeMenu);
+        }
         return mainMenu;
     }
 
@@ -95,7 +78,7 @@ public class MenuService {
 
     @Transactional
     public void deleteMenu(long userId, long menuId) {
-        Menu foundMenu = menuRepository.findById(menuId).orElseThrow(null);
+        Menu foundMenu = menuRepository.findByUserIdAndMenuId(userId, menuId).orElseThrow(null);
         menuRepository.delete(foundMenu);
     }
 
@@ -112,5 +95,11 @@ public class MenuService {
         final int end = Math.min((start + pageable.getPageSize()), listMenu.size());
 
         return new PageImpl<>(listMenu.subList(start, end), pageable, listMenu.size());
+    }
+    @Transactional
+    public Menu getMenuById(long userId,long menuId) throws Throwable{
+        return menuRepository.findByUserIdAndMenuId(userId, menuId).orElseThrow(()->{
+            throw new RuntimeException("the menu was not found!!!");
+        });
     }
 }

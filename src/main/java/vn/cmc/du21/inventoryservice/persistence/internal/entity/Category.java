@@ -1,6 +1,7 @@
 package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -22,7 +23,7 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public Category(long categoryId, String categoryName, Set<Product> products) {
+    public Category(long categoryId, String categoryName, LinkedHashSet<Product> products) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.products = products;
@@ -48,7 +49,7 @@ public class Category {
         return products;
     }
 
-    public void setProducts(Set<Product> products) {
+    public void setProducts(LinkedHashSet<Product> products) {
         this.products = products;
     }
 }

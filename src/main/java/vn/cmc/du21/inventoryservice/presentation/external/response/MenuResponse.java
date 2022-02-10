@@ -6,7 +6,6 @@ import java.util.Set;
 public class MenuResponse {
     private long menuId;
     private String menuName;
-    private long totalMoney;
     private long userId;
     private Set<ProductResponse> products;
 
@@ -15,19 +14,9 @@ public class MenuResponse {
     public MenuResponse() {
     }
 
-//    public MenuResponse(long menuId, String menuName, long sizeId, long totalMoney, long userId, Set<ProductResponse> products) {
-//        this.menuId = menuId;
-//        this.menuName = menuName;
-//        this.sizeId = sizeId;
-//        this.totalMoney = totalMoney;
-//        this.userId = userId;
-//        this.products = products;
-//    }
-
-    public MenuResponse(long menuId, String menuName, long totalMoney, long userId, Set<ProductResponse> products, List<SizeResponse> sizes) {
+    public MenuResponse(long menuId, String menuName, long userId, Set<ProductResponse> products, List<SizeResponse> sizes) {
         this.menuId = menuId;
         this.menuName = menuName;
-        this.totalMoney = totalMoney;
         this.userId = userId;
         this.products = products;
         this.sizes = sizes;
@@ -47,14 +36,6 @@ public class MenuResponse {
 
     public void setMenuName(String menuName) {
         this.menuName = menuName;
-    }
-
-    public long getTotalMoney() {
-        return totalMoney;
-    }
-
-    public void setTotalMoney(long totalMoney) {
-        this.totalMoney = totalMoney;
     }
 
     public long getUserId() {

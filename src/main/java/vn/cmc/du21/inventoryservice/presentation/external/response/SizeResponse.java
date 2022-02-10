@@ -2,16 +2,16 @@ package vn.cmc.du21.inventoryservice.presentation.external.response;
 
 public class SizeResponse {
     private long sizeId;
-    private String nameSize;
+    private String sizeName;
     private long price;
     private long priceSale;
 
     public SizeResponse() {
     }
 
-    public SizeResponse(long sizeId, String nameSize, long price, long priceSale) {
+    public SizeResponse(long sizeId, String sizeName, long price, long priceSale) {
         this.sizeId = sizeId;
-        this.nameSize = nameSize;
+        this.sizeName = sizeName;
         this.price = price;
         this.priceSale = priceSale;
     }
@@ -24,12 +24,12 @@ public class SizeResponse {
         this.sizeId = sizeId;
     }
 
-    public String getNameSize() {
-        return nameSize;
+    public String getSizeName() {
+        return sizeName;
     }
 
-    public void setNameSize(String nameSize) {
-        this.nameSize = nameSize;
+    public void setSizeName(String sizeName) {
+        this.sizeName = sizeName;
     }
 
     public long getPrice() {

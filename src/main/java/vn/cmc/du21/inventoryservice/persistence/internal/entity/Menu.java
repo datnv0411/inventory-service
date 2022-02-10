@@ -1,7 +1,7 @@
 package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -12,25 +12,22 @@ public class Menu {
     private long menuId;
     private String menuName;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "menuSize", joinColumns = @JoinColumn(name = "menuId"), inverseJoinColumns = @JoinColumn(name = "sizeId"))
-    private Set<Size> sizes = new HashSet<>();
+    @Transient
+    private LinkedHashSet<Size> sizes = new LinkedHashSet<>();
 
-    private long totalMoney;
     private long userId;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "menuProduct", joinColumns = @JoinColumn(name = "menuId"), inverseJoinColumns = @JoinColumn(name = "productId"))
-    private Set<Product> products = new HashSet<>();
+    private Set<Product> products = new LinkedHashSet<>();
 
     public Menu() {
     }
 
-    public Menu(long menuId, String menuName, Set<Size> sizes, long totalMoney, long userId, Set<Product> products) {
+    public Menu(long menuId, String menuName, LinkedHashSet<Size> sizes, long userId, LinkedHashSet<Product> products) {
         this.menuId = menuId;
         this.menuName = menuName;
         this.sizes = sizes;
-        this.totalMoney = totalMoney;
         this.userId = userId;
         this.products = products;
     }
@@ -51,20 +48,31 @@ public class Menu {
         this.menuName = menuName;
     }
 
-    public Set<Size> getSizes() {
-        return sizes;
+    public LinkedHashSet<Size> getSizes() {
+
+        LinkedHashSet<Size> listSizeMenu = new LinkedHashSet<>();
+        for (ProductSize item : products.iterator().next().getProductSizes()) {
+            listSizeMenu.add(item.getSize());
+        }
+
+        for(Product itemProduct : products)
+        {
+            LinkedHashSet<Size> listSizeProduct = new LinkedHashSet<>();
+            for (ProductSize item : itemProduct.getProductSizes()) {
+                listSizeProduct.add(item.getSize());
+            }
+
+            for (Size item : listSizeMenu) {
+                if (!listSizeProduct.contains(item)) {
+                    listSizeMenu.remove(item);
+                }
+            }
+        }
+        return listSizeMenu;
     }
 
-    public void setSizes(Set<Size> sizes) {
+    public void setSizes(LinkedHashSet<Size> sizes) {
         this.sizes = sizes;
-    }
-
-    public long getTotalMoney() {
-        return totalMoney;
-    }
-
-    public void setTotalMoney(long totalMoney) {
-        this.totalMoney = totalMoney;
     }
 
     public long getUserId() {

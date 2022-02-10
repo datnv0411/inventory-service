@@ -3,12 +3,15 @@ package vn.cmc.du21.inventoryservice.persistence.internal.entity;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "PRODUCT")
 public class Product implements Serializable {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long productId;
@@ -34,7 +37,7 @@ public class Product implements Serializable {
 
     public Product(long productId, String productName, String productSearch, String quantitative
             , String description, Timestamp createTime, String productImage, Category category
-            , Set<ProductSize> productSizes, Set<Menu> menus) {
+            , LinkedHashSet<ProductSize> productSizes, LinkedHashSet<Menu> menus) {
         this.productId = productId;
         this.productName = productName;
         this.productSearch = productSearch;
@@ -115,7 +118,7 @@ public class Product implements Serializable {
         return productSizes;
     }
 
-    public void setProductSizes(Set<ProductSize> productSizes) {
+    public void setProductSizes(LinkedHashSet<ProductSize> productSizes) {
         this.productSizes = productSizes;
     }
 
@@ -123,7 +126,7 @@ public class Product implements Serializable {
         return menus;
     }
 
-    public void setMenus(Set<Menu> menus) {
+    public void setMenus(LinkedHashSet<Menu> menus) {
         this.menus = menus;
     }
 
@@ -140,3 +143,4 @@ public class Product implements Serializable {
         return Objects.hash(productId);
     }
 }
+
