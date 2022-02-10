@@ -24,8 +24,7 @@ public class MenuController {
 
     @GetMapping("/add/{productId}")
     StandardResponse<Object> addProductToMenu(HttpServletRequest request, HttpServletResponse response,
-                                              @PathVariable(name = "productId") long productId)
-    {
+                                              @PathVariable(name = "productId") long productId) throws Throwable {
         MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.addProduct(productId));
 
         return new StandardResponse<>(

@@ -91,7 +91,7 @@ public class ProductResponse {
     }
 
     public String getProductImage() {
-        return productImage;
+        return "~/api/v1.0/FileUpload/files/" + productImage;
     }
 
     public void setProductImage(String productImage) {
