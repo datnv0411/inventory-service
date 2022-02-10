@@ -27,8 +27,7 @@ public class MenuMapper {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
         String menuName = menu.getMenuName() == null ? null : menu.getMenuName();
 
-        List listSizeResponse = new ArrayList<SizeResponse>();
-
+        List<SizeResponse> listSizeResponse = new ArrayList<>();
 
         for(Size itemSize : menu.getSizes())
         {

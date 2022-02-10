@@ -23,7 +23,11 @@ public class MenuService {
 
     @Transactional
     public Menu addProduct(long productId) {
-        Product foundProduct = productRepository.findById(productId).orElse(null);
+        Product foundProduct = productRepository.findById(productId).orElseThrow(
+                ()-> {
+                    throw new RuntimeException("Product is not available");
+                }
+        );
         Set<Product> listProduct = mainMenu.getProducts();
 
         if (!listProduct.contains(foundProduct)) {
