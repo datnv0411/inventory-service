@@ -3,6 +3,7 @@ package vn.cmc.du21.inventoryservice.presentation.external.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.cmc.du21.inventoryservice.common.restful.PageResponse;
@@ -10,6 +11,7 @@ import vn.cmc.du21.inventoryservice.common.restful.StandardResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StatusResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.mapper.ProductMapper;
 import vn.cmc.du21.inventoryservice.presentation.external.response.ProductResponse;
+import vn.cmc.du21.inventoryservice.service.ImageService;
 import vn.cmc.du21.inventoryservice.service.ProductService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 public class ProductController {
     @Autowired
     ProductService productService;
+    @Autowired
+    ImageService storageService;
 
     //get list products
     @GetMapping("/products")
@@ -114,5 +118,20 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new StandardResponse<>(StatusResponse.SUCCESSFUL,"FOUND",productResponse)
         );
+    }
+
+    //get image's url
+    @GetMapping("product/files/{fileName:.+}")
+    // /files/06a290064eb94a02a58bfeef36002483.png
+    public ResponseEntity<byte[]> readDetailFile(@PathVariable String fileName) {
+        try {
+            byte[] bytes = storageService.readFileContent(fileName);
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(bytes);
+        }catch (Exception exception) {
+            return ResponseEntity.noContent().build();
+        }
     }
 }
