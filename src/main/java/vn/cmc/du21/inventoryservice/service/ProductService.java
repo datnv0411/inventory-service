@@ -19,11 +19,13 @@ public class ProductService {
 
     @Transactional
     public Page<Product> getAllProducts(int page, int size, String sort) {
+
         return productRepository.findAll(PageRequest.of(page, size, Sort.by(sort)));
     }
 
     @Transactional
     public Page<Product> getProductByName(String name, int page, int size, String sort) {
+
         Set<Product> productList = new LinkedHashSet<>();
         String nameSearch = StandardizeStringUtil.standardizeString(name);
         nameSearch = VNCharacterUtil.removeAccent(nameSearch);
@@ -75,12 +77,14 @@ public class ProductService {
 
     @Transactional
     public Page<Product> getProductByCategory(long category, int page, int size, String sort){
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
         return productRepository.findAllByCategory_CategoryId(category,pageable);
     }
 
     @Transactional
     public Product getProductById(Long id) throws Throwable{
+
         return productRepository.findById(id).orElseThrow(() -> {
                     throw new RuntimeException("the product was not found !!!");
                 }
