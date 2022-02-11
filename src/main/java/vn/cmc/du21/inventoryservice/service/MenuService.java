@@ -23,6 +23,7 @@ public class MenuService {
 
     @Transactional
     public Menu addProduct(long productId) throws Throwable{
+
         Product foundProduct = productRepository.findById(productId).orElseThrow(
                 ()-> {
                     throw new RuntimeException("Product is not available");
@@ -56,8 +57,13 @@ public class MenuService {
     }
 
     @Transactional
-    public Menu removeProduct(long productId) {
-        Product foundProduct = productRepository.findById(productId).orElse(null);
+    public Menu removeProduct(long productId) throws Throwable{
+
+        Product foundProduct = productRepository.findById(productId).orElseThrow(
+                () -> {
+                    throw new RuntimeException("Product does not exist !!!");
+                }
+        );
         Set<Product> listProduct = mainMenu.getProducts();
 
         if(listProduct.contains(foundProduct))
@@ -81,8 +87,12 @@ public class MenuService {
     }
 
     @Transactional
-    public void deleteMenu(long userId, long menuId) {
-        Menu foundMenu = menuRepository.findByUserIdAndMenuId(userId, menuId).orElseThrow(null);
+    public void deleteMenu(long userId, long menuId) throws Throwable{
+        Menu foundMenu = menuRepository.findByUserIdAndMenuId(userId, menuId).orElseThrow(
+                () -> {
+                    throw new RuntimeException("Menu does not exist !!!");
+                }
+        );
         menuRepository.delete(foundMenu);
     }
 
@@ -102,6 +112,7 @@ public class MenuService {
     }
     @Transactional
     public Menu getMenuById(long userId,long menuId) throws Throwable{
+
         return menuRepository.findByUserIdAndMenuId(userId, menuId).orElseThrow(()->{
             throw new RuntimeException("the menu was not found!!!");
         });

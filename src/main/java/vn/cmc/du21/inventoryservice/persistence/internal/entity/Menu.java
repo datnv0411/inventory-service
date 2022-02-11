@@ -18,7 +18,8 @@ public class Menu {
     private long userId;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "menuProduct", joinColumns = @JoinColumn(name = "menuId"), inverseJoinColumns = @JoinColumn(name = "productId"))
+    @JoinTable(name = "menuProduct", joinColumns = @JoinColumn(name = "menuId"),
+            inverseJoinColumns = @JoinColumn(name = "productId"))
     private Set<Product> products = new LinkedHashSet<>();
 
     public Menu() {

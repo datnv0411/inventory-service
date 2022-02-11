@@ -28,9 +28,9 @@ public class ProductController {
     //get list products
     @GetMapping("/products")
     ResponseEntity<Object> getAllProducts(@RequestParam(value = "page", required = false) String page
-            , @RequestParam(value = "size", required = false) String size
-            , @RequestParam(value = "sort",required = false) String sort)
-    {
+                                        , @RequestParam(value = "size", required = false) String size
+                                        , @RequestParam(value = "sort",required = false) String sort) {
+
         if (page==null || !page.chars().allMatch(Character::isDigit) || page.equals("")) page="1";
         if (size==null || !size.chars().allMatch(Character::isDigit) || size.equals("")) size="10";
         if (sort==null || sort.equals("")) sort="productId";
@@ -55,12 +55,11 @@ public class ProductController {
 
     //get product by name and sort
     @GetMapping("/product")
-    ResponseEntity<Object> getProduct(
-            @RequestParam(value = "name",required = false) String name
-            , @RequestParam(value = "page",required = false) String page
-            , @RequestParam(value = "size",required = false) String size
-            , @RequestParam(value = "sort",required = false) String sort
-    ) throws Throwable{
+    ResponseEntity<Object> getProduct(@RequestParam(value = "name",required = false) String name
+                                    , @RequestParam(value = "page",required = false) String page
+                                    , @RequestParam(value = "size",required = false) String size
+                                    , @RequestParam(value = "sort",required = false) String sort
+                                    ,  HttpServletRequest request, HttpServletResponse response) throws Throwable{
 
         if (page==null || !page.chars().allMatch(Character::isDigit) || page.equals("")) page="1";
         if (size==null || !size.chars().allMatch(Character::isDigit) || size.equals("")) size="10";
@@ -86,12 +85,12 @@ public class ProductController {
 
     //get list product by category
     @GetMapping("/product/category/{categoryId}")
-    ResponseEntity<Object> getProductByCategory(HttpServletRequest request,
-            HttpServletResponse response,
-            @PathVariable(name = "categoryId") long category
-            , @RequestParam(value = "page", required = false) String page
-            , @RequestParam(value = "size", required = false) String size
-            , @RequestParam(value = "sort", required = false) String sort) {
+    ResponseEntity<Object> getProductByCategory(@PathVariable(name = "categoryId") long category
+                                                , @RequestParam(value = "page", required = false) String page
+                                                , @RequestParam(value = "size", required = false) String size
+                                                , @RequestParam(value = "sort", required = false) String sort,
+                                                HttpServletRequest request, HttpServletResponse response) {
+
         if(page == null || page.equals("") || !page.chars().allMatch(Character::isDigit)) page = "1";
         if(size == null || size.equals("") || !size.chars().allMatch(Character::isDigit)) size = "10";
         if(sort == null || sort.equals("")) sort = "productId";
@@ -114,15 +113,18 @@ public class ProductController {
 
     @GetMapping("/product/get-detail-product/{id}")
     ResponseEntity<Object> getDetailProduct(@PathVariable Long id) throws Throwable {
+
         ProductResponse productResponse = ProductMapper.convertProductToProductResponse(productService.getProductById(id));
+
         return ResponseEntity.status(HttpStatus.OK).body(
-                new StandardResponse<>(StatusResponse.SUCCESSFUL,"FOUND",productResponse)
+                new StandardResponse<>(StatusResponse.SUCCESSFUL,
+                        "FOUND",
+                        productResponse)
         );
     }
 
     //get image's url
     @GetMapping("product/files/{fileName:.+}")
-    // /files/06a290064eb94a02a58bfeef36002483.png
     public ResponseEntity<byte[]> readDetailFile(@PathVariable String fileName) {
         try {
             byte[] bytes = storageService.readFileContent(fileName);
