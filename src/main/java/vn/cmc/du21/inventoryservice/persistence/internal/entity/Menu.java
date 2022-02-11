@@ -5,7 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "MENU")
+@Table(name = "menu")
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -18,7 +18,7 @@ public class Menu {
     private long userId;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "menuProduct", joinColumns = @JoinColumn(name = "menuId"),
+    @JoinTable(name = "menuproduct", joinColumns = @JoinColumn(name = "menuId"),
             inverseJoinColumns = @JoinColumn(name = "productId"))
     private Set<Product> products = new LinkedHashSet<>();
 

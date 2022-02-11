@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table
+@Table(name = "productsize")
 public class ProductSize implements Serializable {
     @EmbeddedId
     private ProductSizeId productSizeId;

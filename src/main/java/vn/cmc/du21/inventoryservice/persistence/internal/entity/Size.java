@@ -7,7 +7,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "SIZE")
+@Table(name = "size")
 public class Size implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
