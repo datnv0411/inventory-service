@@ -20,12 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(path = "/api/v1.0/menu")
 public class MenuController {
     @Autowired
-    private MenuService menuService;
+    MenuService menuService;
 
     @GetMapping("/add/{productId}")
-    StandardResponse<Object> addProductToMenu(HttpServletRequest request, HttpServletResponse response,
-                                              @PathVariable(name = "productId") long productId)
-    {
+    StandardResponse<Object> addProductToMenu(@PathVariable(name = "productId") long productId,
+                                              HttpServletRequest request, HttpServletResponse response) throws Throwable {
+
         MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.addProduct(productId));
 
         return new StandardResponse<>(
@@ -36,8 +36,8 @@ public class MenuController {
     }
 
     @GetMapping("/remove/{productId}")
-    StandardResponse<Object> removeProductFromMenu(HttpServletRequest request, HttpServletResponse response,
-                                                   @PathVariable(name = "productId") long productId)
+    StandardResponse<Object> removeProductFromMenu(@PathVariable(name = "productId") long productId,
+                                                   HttpServletRequest request, HttpServletResponse response)
     {
         MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.removeProduct(productId));
         return new StandardResponse<>(
@@ -48,8 +48,8 @@ public class MenuController {
     }
 
     @PostMapping("/create")
-    StandardResponse<Object> createMenu(HttpServletRequest request, HttpServletResponse response,
-                                        @RequestBody MenuRequest menuRequest)
+    StandardResponse<Object> createMenu(@RequestBody MenuRequest menuRequest,
+                                        HttpServletRequest request, HttpServletResponse response)
     {
         UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request);
 
@@ -66,10 +66,10 @@ public class MenuController {
     }
 
     @GetMapping("/get-my-menu")
-    PageResponse<Object> getMyMenu(HttpServletRequest request, HttpServletResponse response,
-                                   @RequestParam(name = "page", required = false) String page,
+    PageResponse<Object> getMyMenu(@RequestParam(name = "page", required = false) String page,
                                    @RequestParam(name = "size", required = false) String size,
-                                   @RequestParam(name = "sort", required = false) String sort)
+                                   @RequestParam(name = "sort", required = false) String sort,
+                                   HttpServletRequest request, HttpServletResponse response)
     {
         if(page == null || page.equals("") || !page.chars().allMatch(Character::isDigit)) page = "1";
         if(size == null || size.equals("") || !size.chars().allMatch(Character::isDigit)) size = "10";
@@ -91,8 +91,8 @@ public class MenuController {
     }
 
     @DeleteMapping("/delete/{menuId}")
-    StandardResponse<Object> deleteMenu(HttpServletRequest request, HttpServletResponse response,
-                                        @PathVariable(name = "menuId") long menuId)
+    StandardResponse<Object> deleteMenu(@PathVariable(name = "menuId") long menuId,
+                                        HttpServletRequest request, HttpServletResponse response)
     {
         UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request);
 
@@ -103,9 +103,11 @@ public class MenuController {
                 "Deleted"
         );
     }
+
     @GetMapping("/get-detail-menu/{menuId}")
-    StandardResponse<Object> getDetailMenu(HttpServletRequest request,HttpServletResponse response,
-                                           @PathVariable(name ="menuId") long menuId) throws Throwable {
+    StandardResponse<Object> getDetailMenu(@PathVariable(name ="menuId") long menuId,
+                                           HttpServletRequest request,HttpServletResponse response) throws Throwable {
+
         UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request);
         long userId = userLogin.getUserId();
         MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.getMenuById(userId,menuId));

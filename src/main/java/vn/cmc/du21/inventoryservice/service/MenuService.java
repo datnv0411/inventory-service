@@ -22,7 +22,7 @@ public class MenuService {
     private Menu mainMenu = new Menu();
 
     @Transactional
-    public Menu addProduct(long productId) {
+    public Menu addProduct(long productId) throws Throwable{
         Product foundProduct = productRepository.findById(productId).orElseThrow(
                 ()-> {
                     throw new RuntimeException("Product is not available");
