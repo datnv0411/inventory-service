@@ -60,7 +60,7 @@ public class JwtTokenProvider {
     {
         String[] arr = request.getHeader("Authorization").split(" ");
         String token = arr[1];
-        final String uri = "http://localhost:8888/api/v1.0/authentication/verify?token=" + token;
+        final String uri = "http://192.168.66.125:8100/api/v1.0/authentication/verify?token=" + token;
 
         RestTemplate restTemplate = new RestTemplate();
         UserResponse userLogin = restTemplate.getForObject(uri, UserResponse.class);
