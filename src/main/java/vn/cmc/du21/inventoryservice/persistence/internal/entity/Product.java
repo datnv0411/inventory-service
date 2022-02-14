@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "PRODUCT")
+@Table(name = "product")
 public class Product implements Serializable {
 
 

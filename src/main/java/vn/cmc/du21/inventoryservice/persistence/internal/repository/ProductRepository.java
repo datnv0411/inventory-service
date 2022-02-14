@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT * " +
-            " FROM PRODUCTSIZE ps " +
-            " inner join PRODUCT p on ps.product_productId = p.productId " +
+            " FROM productsize ps " +
+            " inner join product p on ps.product_productId = p.productId " +
             " where productSearch LIKE %:productSearch% "
             , nativeQuery = true)
     List<Product> findByProductName(
