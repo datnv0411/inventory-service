@@ -1,5 +1,6 @@
 package vn.cmc.du21.inventoryservice.presentation.external.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@Slf4j
 @RequestMapping(path = "/api/v1.0")
 public class ProductController {
     @Autowired
@@ -31,6 +33,7 @@ public class ProductController {
                                         , @RequestParam(value = "size", required = false) String size
                                         , @RequestParam(value = "sort",required = false) String sort) {
 
+        log.info("Mapped getAllProducts method {{GET: /products}}");
         if (page==null || !page.chars().allMatch(Character::isDigit) || page.equals("")) page="1";
         if (size==null || !size.chars().allMatch(Character::isDigit) || size.equals("")) size="10";
         if (sort==null || sort.equals("")) sort="productId";
@@ -61,6 +64,7 @@ public class ProductController {
                                     , @RequestParam(value = "sort",required = false) String sort
                                     ,  HttpServletRequest request, HttpServletResponse response) throws Throwable{
 
+        log.info("Mapped getProduct method {{GET: /product}}");
         if (page==null || !page.chars().allMatch(Character::isDigit) || page.equals("")) page="1";
         if (size==null || !size.chars().allMatch(Character::isDigit) || size.equals("")) size="10";
         if (sort==null || sort.equals("")) sort="create-time";
@@ -91,6 +95,7 @@ public class ProductController {
                                                 , @RequestParam(value = "sort", required = false) String sort,
                                                 HttpServletRequest request, HttpServletResponse response) {
 
+        log.info("Mapped getProductByCategory method {{GET: /product/category/{categoryId}}}");
         if(page == null || page.equals("") || !page.chars().allMatch(Character::isDigit)) page = "1";
         if(size == null || size.equals("") || !size.chars().allMatch(Character::isDigit)) size = "10";
         if(sort == null || sort.equals("")) sort = "productId";
@@ -114,6 +119,7 @@ public class ProductController {
     @GetMapping("/product/get-detail-product/{id}")
     ResponseEntity<Object> getDetailProduct(@PathVariable Long id) throws Throwable {
 
+        log.info("Mapped getDetailProduct method {{GET: /product/get-detail-product/{id}}}");
         ProductResponse productResponse = ProductMapper.convertProductToProductResponse(productService.getProductById(id));
 
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -126,6 +132,7 @@ public class ProductController {
     //get image's url
     @GetMapping("product/files/{fileName:.+}")
     public ResponseEntity<byte[]> readDetailFile(@PathVariable String fileName) {
+        log.info("Mapped readDetailFile method {{GET: product/files/{fileName:.+}}}");
         try {
             byte[] bytes = storageService.readFileContent(fileName);
             return ResponseEntity
