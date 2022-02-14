@@ -3,6 +3,8 @@ package vn.cmc.du21.inventoryservice.common;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jdk.nashorn.internal.runtime.logging.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 import vn.cmc.du21.inventoryservice.presentation.internal.response.UserResponse;
 
@@ -11,6 +13,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
+@Slf4j
 public class JwtTokenProvider {
     private JwtTokenProvider() {
         throw new IllegalStateException("Utility class");
@@ -25,6 +28,7 @@ public class JwtTokenProvider {
 
     // Tạo ra jwt từ thông tin user
     public static String generateToken(long sessionId) {
+        log.info("chay den gen Token r nhé");
         Instant now = Instant.now();
         Date expiryDate = Date.from(now.plus(JWT_AMOUNT_TO_ADD_TIME, JWT_TIME_UNIT));
         // Tạo chuỗi json web token từ id của user.
@@ -56,8 +60,7 @@ public class JwtTokenProvider {
         return claims.getExpiration();
     }
 
-    public static UserResponse getInfoUserFromToken(HttpServletRequest request)
-    {
+    public static UserResponse getInfoUserFromToken(HttpServletRequest request) {
         String[] arr = request.getHeader("Authorization").split(" ");
         String token = arr[1];
         final String uri = "http://192.168.66.125:8100/api/v1.0/authentication/verify?token=" + token;
