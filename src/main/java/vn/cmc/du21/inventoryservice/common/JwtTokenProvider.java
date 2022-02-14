@@ -3,7 +3,6 @@ package vn.cmc.du21.inventoryservice.common;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jdk.nashorn.internal.runtime.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 import vn.cmc.du21.inventoryservice.presentation.internal.response.UserResponse;
@@ -60,7 +59,9 @@ public class JwtTokenProvider {
         return claims.getExpiration();
     }
 
-    public static UserResponse getInfoUserFromToken(HttpServletRequest request) {
+    public static UserResponse getInfoUserFromToken(HttpServletRequest request)
+    {
+        log.info("Mapped getInfoUserFromToken method");
         String[] arr = request.getHeader("Authorization").split(" ");
         String token = arr[1];
         final String uri = "http://192.168.66.125:8100/api/v1.0/authentication/verify?token=" + token;
