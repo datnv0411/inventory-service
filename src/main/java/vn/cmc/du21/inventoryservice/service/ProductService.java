@@ -5,8 +5,10 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import vn.cmc.du21.inventoryservice.common.StandardizeStringUtil;
 import vn.cmc.du21.inventoryservice.common.VNCharacterUtil;
+import vn.cmc.du21.inventoryservice.persistence.internal.entity.Category;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.ProductSize;
+import vn.cmc.du21.inventoryservice.persistence.internal.repository.CategoryRepository;
 import vn.cmc.du21.inventoryservice.persistence.internal.repository.ProductRepository;
 
 import javax.transaction.Transactional;
@@ -16,6 +18,8 @@ import java.util.*;
 public class ProductService {
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Transactional
     public Page<Product> getAllProducts(int page, int size, String sort) {
