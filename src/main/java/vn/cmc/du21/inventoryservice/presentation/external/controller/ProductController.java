@@ -11,12 +11,15 @@ import vn.cmc.du21.inventoryservice.common.restful.PageResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StandardResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StatusResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.mapper.ProductMapper;
+import vn.cmc.du21.inventoryservice.presentation.external.response.CategoryResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.response.ProductResponse;
+import vn.cmc.du21.inventoryservice.service.CategoryService;
 import vn.cmc.du21.inventoryservice.service.ImageService;
 import vn.cmc.du21.inventoryservice.service.ProductService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @Slf4j
