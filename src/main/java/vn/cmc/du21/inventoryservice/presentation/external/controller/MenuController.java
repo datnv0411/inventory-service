@@ -26,37 +26,40 @@ public class MenuController {
     @Autowired
     MenuService menuService;
 
-    @GetMapping("/add/{productId}")
-    ResponseEntity<Object> addProductToMenu(@PathVariable(name = "productId") long productId,
-                                              HttpServletRequest request, HttpServletResponse response) throws Throwable {
-
-        log.info("Mapped addProductToMenu method {{GET: /add/{productId}}}");
-        MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.addProduct(productId));
-
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new StandardResponse<>(
-                    StatusResponse.SUCCESSFUL,
-                    "Add successfully",
-                    menuResponse
-                )
-        );
-    }
-
-    @GetMapping("/remove/{productId}")
-    ResponseEntity<Object> removeProductFromMenu(@PathVariable(name = "productId") long productId,
-                                                   HttpServletRequest request, HttpServletResponse response ) throws Throwable {
-
-        log.info("Mapped removeProductFromMenu method {{GET: /remove/{productId}}}");
-        MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.removeProduct(productId));
-
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new StandardResponse<>(
-                        StatusResponse.SUCCESSFUL,
-                        "Removed",
-                        menuResponse
-                )
-        );
-    }
+//    @GetMapping("/add/{productId}")
+//    ResponseEntity<Object> addProductToMenu(@PathVariable(name = "productId") long productId,
+//                                              HttpServletRequest request, HttpServletResponse response) throws Throwable {
+//
+//        log.info("Mapped addProductToMenu method {{GET: /add/{productId}}}");
+//
+//        HttpSession session = request.getSession();
+//        MenuRequest cart = (MenuRequest) session.getAttribute("Menu");
+//        MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.addProduct(productId));
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new StandardResponse<>(
+//                    StatusResponse.SUCCESSFUL,
+//                    "Add successfully",
+//                    menuResponse
+//                )
+//        );
+//    }
+//
+//    @GetMapping("/remove/{productId}")
+//    ResponseEntity<Object> removeProductFromMenu(@PathVariable(name = "productId") long productId,
+//                                                   HttpServletRequest request, HttpServletResponse response ) throws Throwable {
+//
+//        log.info("Mapped removeProductFromMenu method {{GET: /remove/{productId}}}");
+//        MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.removeProduct(productId));
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new StandardResponse<>(
+//                        StatusResponse.SUCCESSFUL,
+//                        "Removed",
+//                        menuResponse
+//                )
+//        );
+//    }
 
     @PostMapping("/create")
     ResponseEntity<Object> createMenu(@RequestBody MenuRequest menuRequest,
@@ -76,6 +79,7 @@ public class MenuController {
         }
 
         long userId = userLogin.getUserId();
+
         menuRequest.setUserId(userId);
         MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(
                 menuService.createMenu(MenuMapper.convertMenuRequestToMenu(menuRequest))
@@ -114,6 +118,7 @@ public class MenuController {
         }
 
         long userId = userLogin.getUserId();
+
         Page<MenuResponse> listMenu = menuService.getPageMenu(userId, page, size, sort)
                 .map(MenuMapper::convertMenuToMenuResponse);
 

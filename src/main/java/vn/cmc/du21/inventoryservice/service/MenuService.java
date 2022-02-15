@@ -19,71 +19,83 @@ public class MenuService {
     MenuRepository menuRepository;
     @Autowired
     ProductRepository productRepository;
-    private Menu mainMenu = new Menu();
 
-    @Transactional
-    public Menu addProduct(long productId) throws Throwable{
-
-        Product foundProduct = productRepository.findById(productId).orElseThrow(
-                ()-> {
-                    throw new RuntimeException("Product is not available");
-                }
-        );
-        Set<Product> listProduct = mainMenu.getProducts();
-
-        if (!listProduct.contains(foundProduct)) {
-            listProduct.add(foundProduct);
-            mainMenu.setProducts(listProduct);
-
-            LinkedHashSet<Size> listSizeMenu = mainMenu.getSizes();
-            LinkedHashSet<Size> listSizeProduct = new LinkedHashSet<>();
-
-            for (ProductSize item : foundProduct.getProductSizes()) {
-                listSizeProduct.add(item.getSize());
-            }
-
-            if (listSizeMenu.isEmpty()) {
-                listSizeMenu.addAll(listSizeProduct);
-            } else {
-                for (Size item : listSizeMenu) {
-                    if (!listSizeProduct.contains(item)) {
-                        listSizeMenu.remove(item);
-                    }
-                }
-            }
-            mainMenu.setSizes(listSizeMenu);
-        }
-        return mainMenu;
-    }
-
-    @Transactional
-    public Menu removeProduct(long productId) throws Throwable{
-
-        Product foundProduct = productRepository.findById(productId).orElseThrow(
-                () -> {
-                    throw new RuntimeException("Product does not exist !!!");
-                }
-        );
-        Set<Product> listProduct = mainMenu.getProducts();
-
-        if(listProduct.contains(foundProduct))
-        {
-            listProduct.remove(foundProduct);
-            mainMenu.setProducts(listProduct);
-
-            LinkedHashSet<Size> listSizeMenu = mainMenu.getSizes();
-            mainMenu.setSizes(listSizeMenu);
-        }
-        return mainMenu;
-    }
+//    @Transactional
+//    public Menu addProduct(long productId) throws Throwable{
+//
+//        Product foundProduct = productRepository.findById(productId).orElseThrow(
+//                ()-> {
+//                    throw new RuntimeException("Product is not available");
+//                }
+//        );
+//        Set<Product> listProduct = mainMenu.getProducts();
+//
+//        if (!listProduct.contains(foundProduct)) {
+//            listProduct.add(foundProduct);
+//            mainMenu.setProducts(listProduct);
+//
+//            LinkedHashSet<Size> listSizeMenu = mainMenu.getSizes();
+//            LinkedHashSet<Size> listSizeProduct = new LinkedHashSet<>();
+//
+//            for (ProductSize item : foundProduct.getProductSizes()) {
+//                listSizeProduct.add(item.getSize());
+//            }
+//
+//            if (listSizeMenu.isEmpty()) {
+//                listSizeMenu.addAll(listSizeProduct);
+//            } else {
+//                for (Size item : listSizeMenu) {
+//                    if (!listSizeProduct.contains(item)) {
+//                        listSizeMenu.remove(item);
+//                    }
+//                }
+//            }
+//            mainMenu.setSizes(listSizeMenu);
+//        }
+//        return mainMenu;
+//    }
+//
+//    @Transactional
+//    public Menu removeProduct(long productId) throws Throwable{
+//
+//        Product foundProduct = productRepository.findById(productId).orElseThrow(
+//                () -> {
+//                    throw new RuntimeException("Product does not exist !!!");
+//                }
+//        );
+//        Set<Product> listProduct = mainMenu.getProducts();
+//
+//        if(listProduct.contains(foundProduct))
+//        {
+//            listProduct.remove(foundProduct);
+//            mainMenu.setProducts(listProduct);
+//
+//            LinkedHashSet<Size> listSizeMenu = mainMenu.getSizes();
+//            mainMenu.setSizes(listSizeMenu);
+//        }
+//        return mainMenu;
+//    }
 
     @Transactional
     public Menu createMenu(Menu menu) {
-        mainMenu.setUserId(menu.getUserId());
-        mainMenu.setMenuName(menu.getMenuName());
-        Menu temp = mainMenu;
-        mainMenu = new Menu();
-        return menuRepository.save(temp);
+        Set<Product> products = new LinkedHashSet<>();
+        for(Product item : menu.getProducts())
+        {
+            Optional<Product> product = productRepository.findById(item.getProductId());
+
+            if(product.isPresent())
+            {
+                products.add(product.get());
+            }
+        }
+
+        if(products.isEmpty())
+        {
+            throw new RuntimeException("List product is empty !!!");
+        }
+
+        menu.setProducts(products);
+        return menuRepository.save(menu);
     }
 
     @Transactional

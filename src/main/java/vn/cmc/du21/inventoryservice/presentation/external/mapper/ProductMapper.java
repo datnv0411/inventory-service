@@ -23,12 +23,13 @@ public class ProductMapper {
             SizeResponse sizeResponse = new SizeResponse();
             sizeResponse.setSizeId(item.getSize().getSizeId());
             sizeResponse.setSizeName(item.getSize().getSizeName());
+            sizeResponse.setSizeDefault(item.getSize().isSizeDefault());
             sizeResponse.setPrice(item.getPrice());
             sizeResponse.setPriceSale(item.getPriceSale());
 
             sizeResponseList.add(sizeResponse);
         }
-        return new ProductResponse(product.getProductId(), product.getProductName(), product.getProductSearch(),
+        return new ProductResponse(product.getProductId(), product.getProductName(),
                 product.getQuantitative(), product.getDescription(), createTime, product.getProductImage(),
                 product.getCategory().getCategoryId(), product.getCategory().getCategoryName(), sizeResponseList);
     }

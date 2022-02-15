@@ -5,6 +5,7 @@ import vn.cmc.du21.inventoryservice.persistence.internal.entity.Product;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.ProductSize;
 import vn.cmc.du21.inventoryservice.persistence.internal.entity.Size;
 import vn.cmc.du21.inventoryservice.presentation.external.request.MenuRequest;
+import vn.cmc.du21.inventoryservice.presentation.external.request.ProductRequest;
 import vn.cmc.du21.inventoryservice.presentation.external.response.MenuResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.response.ProductResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.response.SizeResponse;
@@ -35,6 +36,7 @@ public class MenuMapper {
 
             sizeResponse.setSizeId(itemSize.getSizeId());
             sizeResponse.setSizeName(itemSize.getSizeName());
+            sizeResponse.setSizeDefault(itemSize.isSizeDefault());
 
             for(Product itemProduct : menu.getProducts())
             {
@@ -62,6 +64,17 @@ public class MenuMapper {
         Menu menu = new Menu();
         menu.setUserId(menuRequest.getUserId());
         menu.setMenuName(menuRequest.getMenuName());
+
+        Set<Product> products = new LinkedHashSet<>();
+
+        for(ProductRequest item : menuRequest.getProducts())
+        {
+            Product product = new Product();
+            product.setProductId(item.getProductId());
+            products.add(product);
+        }
+
+        menu.setProducts(products);
         return menu;
     }
 }

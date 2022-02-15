@@ -13,6 +13,7 @@ public class Size implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long sizeId;
     private String sizeName;
+    private boolean sizeDefault;
 
     @OneToMany(mappedBy = "size", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<ProductSize> productSizes;
@@ -23,6 +24,13 @@ public class Size implements Serializable {
     public Size(long sizeId, String sizeName, LinkedHashSet<ProductSize> productSizes) {
         this.sizeId = sizeId;
         this.sizeName = sizeName;
+        this.productSizes = productSizes;
+    }
+
+    public Size(long sizeId, String sizeName, boolean sizeDefault, Set<ProductSize> productSizes) {
+        this.sizeId = sizeId;
+        this.sizeName = sizeName;
+        this.sizeDefault = sizeDefault;
         this.productSizes = productSizes;
     }
 
@@ -61,5 +69,13 @@ public class Size implements Serializable {
 
     public void setProductSizes(LinkedHashSet<ProductSize> productSizes) {
         this.productSizes = productSizes;
+    }
+
+    public boolean isSizeDefault() {
+        return sizeDefault;
+    }
+
+    public void setSizeDefault(boolean sizeDefault) {
+        this.sizeDefault = sizeDefault;
     }
 }

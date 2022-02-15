@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 
 @Service
 public class ImageService {
-    private final Path storageFolder = Paths.get("uploads");
+    private final Path storageFolder = Paths.get("src/main/resources/static/uploads");
     //constructor
     public ImageService() {
         try {

@@ -5,6 +5,7 @@ public class SizeResponse {
     private String sizeName;
     private long price;
     private long priceSale;
+    private boolean sizeDefault;
 
     public SizeResponse() {
     }
@@ -14,6 +15,14 @@ public class SizeResponse {
         this.sizeName = sizeName;
         this.price = price;
         this.priceSale = priceSale;
+    }
+
+    public SizeResponse(long sizeId, String sizeName, long price, long priceSale, boolean sizeDefault) {
+        this.sizeId = sizeId;
+        this.sizeName = sizeName;
+        this.price = price;
+        this.priceSale = priceSale;
+        this.sizeDefault = sizeDefault;
     }
 
     public long getSizeId() {
@@ -46,5 +55,13 @@ public class SizeResponse {
 
     public void setPriceSale(long priceSale) {
         this.priceSale = priceSale;
+    }
+
+    public boolean isSizeDefault() {
+        return sizeDefault;
+    }
+
+    public void setSizeDefault(boolean sizeDefault) {
+        this.sizeDefault = sizeDefault;
     }
 }

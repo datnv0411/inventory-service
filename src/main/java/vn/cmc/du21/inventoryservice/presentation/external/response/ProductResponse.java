@@ -7,7 +7,6 @@ import java.util.List;
 public class ProductResponse {
     private long productId;
     private String productName;
-    private String productSearch;
     private String quantitative;
     private String description;
     private String createTime;
@@ -19,11 +18,10 @@ public class ProductResponse {
     public ProductResponse() {
     }
 
-    public ProductResponse(long productId, String productName, String productSearch, String quantitative
+    public ProductResponse(long productId, String productName, String quantitative
             , String description, String createTime, String productImage, long categoryId) {
         this.productId = productId;
         this.productName = productName;
-        this.productSearch = productSearch;
         this.quantitative = quantitative;
         this.description = description;
         this.createTime = createTime;
@@ -31,12 +29,11 @@ public class ProductResponse {
         this.categoryId = categoryId;
     }
 
-    public ProductResponse(long productId, String productName, String productSearch, String quantitative
+    public ProductResponse(long productId, String productName, String quantitative
             , String description, String createTime, String productImage, long categoryId
             , List<SizeResponse> sizeResponseList) {
         this.productId = productId;
         this.productName = productName;
-        this.productSearch = productSearch;
         this.quantitative = quantitative;
         this.description = description;
         this.createTime = createTime;
@@ -45,12 +42,11 @@ public class ProductResponse {
         this.sizeResponseList = sizeResponseList;
     }
 
-    public ProductResponse(long productId, String productName, String productSearch, String quantitative,
+    public ProductResponse(long productId, String productName, String quantitative,
                            String description, String createTime, String productImage, long categoryId,
                            String categoryName, List<SizeResponse> sizeResponseList) {
         this.productId = productId;
         this.productName = productName;
-        this.productSearch = productSearch;
         this.quantitative = quantitative;
         this.description = description;
         this.createTime = createTime;
@@ -74,14 +70,6 @@ public class ProductResponse {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public String getProductSearch() {
-        return productSearch;
-    }
-
-    public void setProductSearch(String productSearch) {
-        this.productSearch = productSearch;
     }
 
     public String getQuantitative() {
@@ -109,6 +97,7 @@ public class ProductResponse {
     }
 
     public String getProductImage() {
+
         return PathImageUtil.getPathImage(this.productImage);
     }
 
