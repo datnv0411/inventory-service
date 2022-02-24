@@ -1,7 +1,9 @@
 package vn.cmc.du21.inventoryservice.presentation.external.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @RequestMapping(path = "/api/v1.0/menu")
 public class MenuController {
+    @Autowired
+    Environment env;
     @Autowired
     MenuService menuService;
 
@@ -63,21 +67,10 @@ public class MenuController {
 
     @PostMapping("/create")
     ResponseEntity<Object> createMenu(@RequestBody MenuRequest menuRequest,
-                                        HttpServletRequest request, HttpServletResponse response) {
+                                        HttpServletRequest request, HttpServletResponse response) throws Throwable {
 
         log.info("Mapped createMenu method {{POST: /create}}");
-        UserResponse userLogin;
-        try {
-            userLogin = JwtTokenProvider.getInfoUserFromToken(request);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new StandardResponse<>(
-                            StatusResponse.UNAUTHORIZED,
-                            "Bad token!!!"
-                    )
-            );
-        }
-
+        UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request, env);
         long userId = userLogin.getUserId();
 
         menuRequest.setUserId(userId);
@@ -98,25 +91,14 @@ public class MenuController {
     ResponseEntity<Object> getMyMenu(@RequestParam(name = "page", required = false) String page,
                                    @RequestParam(name = "size", required = false) String size,
                                    @RequestParam(name = "sort", required = false) String sort,
-                                   HttpServletRequest request, HttpServletResponse response){
+                                   HttpServletRequest request, HttpServletResponse response) throws Throwable {
 
         log.info("Mapped getMyMenu method {{GET: /get-my-menu}}");
         if(page == null || page.equals("") || !page.chars().allMatch(Character::isDigit)) page = "1";
         if(size == null || size.equals("") || !size.chars().allMatch(Character::isDigit)) size = "10";
         if(sort == null || sort.equals("")) sort = "menuId";
 
-        UserResponse userLogin;
-        try {
-            userLogin = JwtTokenProvider.getInfoUserFromToken(request);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new StandardResponse<>(
-                            StatusResponse.UNAUTHORIZED,
-                            "Bad token!!!"
-                    )
-            );
-        }
-
+        UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request, env);
         long userId = userLogin.getUserId();
 
         Page<MenuResponse> listMenu = menuService.getPageMenu(userId, page, size, sort)
@@ -141,19 +123,9 @@ public class MenuController {
                                         HttpServletRequest request, HttpServletResponse response) throws Throwable {
 
         log.info("Mapped deleteMenu method {{DELETE: /delete/{menuId}}}");
-        UserResponse userLogin;
-        try {
-            userLogin = JwtTokenProvider.getInfoUserFromToken(request);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new StandardResponse<>(
-                            StatusResponse.UNAUTHORIZED,
-                            "Bad token!!!"
-                    )
-            );
-        }
-
+        UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request, env);
         long userId = userLogin.getUserId();
+
         menuService.deleteMenu(userId, menuId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new StandardResponse<>(
@@ -168,19 +140,9 @@ public class MenuController {
                                            HttpServletRequest request,HttpServletResponse response) throws Throwable {
 
         log.info("Mapped getDetailMenu method {{GET: /get-detail-menu/{menuId}}}");
-        UserResponse userLogin;
-        try {
-            userLogin = JwtTokenProvider.getInfoUserFromToken(request);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
-                    new StandardResponse<>(
-                            StatusResponse.UNAUTHORIZED,
-                            "Bad token!!!"
-                    )
-            );
-        }
-
+        UserResponse userLogin = JwtTokenProvider.getInfoUserFromToken(request, env);
         long userId = userLogin.getUserId();
+
         MenuResponse menuResponse = MenuMapper.convertMenuToMenuResponse(menuService.getMenuById(userId,menuId));
 
         return ResponseEntity.status(HttpStatus.OK).body(

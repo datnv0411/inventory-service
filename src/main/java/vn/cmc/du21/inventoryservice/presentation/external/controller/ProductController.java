@@ -11,15 +11,12 @@ import vn.cmc.du21.inventoryservice.common.restful.PageResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StandardResponse;
 import vn.cmc.du21.inventoryservice.common.restful.StatusResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.mapper.ProductMapper;
-import vn.cmc.du21.inventoryservice.presentation.external.response.CategoryResponse;
 import vn.cmc.du21.inventoryservice.presentation.external.response.ProductResponse;
-import vn.cmc.du21.inventoryservice.service.CategoryService;
 import vn.cmc.du21.inventoryservice.service.ImageService;
 import vn.cmc.du21.inventoryservice.service.ProductService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -28,7 +25,7 @@ public class ProductController {
     @Autowired
     ProductService productService;
     @Autowired
-    ImageService storageService;
+    ImageService imageService;
 
     //get list products
     @GetMapping("/products")
@@ -137,7 +134,7 @@ public class ProductController {
     public ResponseEntity<byte[]> readDetailFile(@PathVariable String fileName) {
         log.info("Mapped readDetailFile method {{GET: product/files/{fileName:.+}}}");
         try {
-            byte[] bytes = storageService.readFileContent(fileName);
+            byte[] bytes = imageService.readFileContent(fileName);
             return ResponseEntity
                     .ok()
                     .contentType(MediaType.IMAGE_JPEG)
