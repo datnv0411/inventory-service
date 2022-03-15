@@ -1,4 +1,4 @@
-package vn.cmc.du21.inventoryservice.loader;
+package vn.cmc.du21.inventoryservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,11 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"vn.cmc.du21.inventoryservice.presentation.external.controller",
-		"vn.cmc.du21.inventoryservice.presentation.internal.controller",
-		"vn.cmc.du21.inventoryservice.service"})
-@EntityScan(basePackages = "vn.cmc.du21.inventoryservice.persistence.internal.entity")
-@EnableJpaRepositories(basePackages = "vn.cmc.du21.inventoryservice.persistence.internal.repository")
 public class InventoryserviceApplication {
 
 	public static void main(String[] args) {

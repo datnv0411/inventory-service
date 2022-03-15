@@ -27,6 +27,7 @@ public class ImageService {
         try {
             Path file = storageFolder.resolve(fileName);
             UrlResource resource = new UrlResource(file.toUri());
+            System.out.printf(resource.toString());
             if (resource.exists() || resource.isReadable()) {
                 return StreamUtils.copyToByteArray(resource.getInputStream());
             }
