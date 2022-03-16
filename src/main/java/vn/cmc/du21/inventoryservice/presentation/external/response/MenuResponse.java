@@ -9,7 +9,7 @@ public class MenuResponse {
     private long userId;
     private Set<ProductResponse> products;
 
-    private List<SizeResponse> sizes;
+    private List<SizeResponse> sizeResponseList;
 
     public MenuResponse() {
     }
@@ -19,7 +19,7 @@ public class MenuResponse {
         this.menuName = menuName;
         this.userId = userId;
         this.products = products;
-        this.sizes = sizes;
+        this.sizeResponseList = sizes;
     }
 
     public long getMenuId() {
@@ -54,11 +54,11 @@ public class MenuResponse {
         this.products = products;
     }
 
-    public List<SizeResponse> getSizes() {
-        return sizes;
+    public List<SizeResponse> getSizeResponseList() {
+        return sizeResponseList;
     }
 
-    public void setSizes(List<SizeResponse> sizes) {
-        this.sizes = sizes;
+    public void setSizeResponseList(List<SizeResponse> sizeResponseList) {
+        this.sizeResponseList = sizeResponseList;
     }
 }
